@@ -28,7 +28,8 @@
   --color-text: #191815;
   --color-text-soft: #68645b;
   --color-line: #ded8ca;
-  --color-gold: #a87816;
+  /* Dark enough for small gold text to meet contrast on light surfaces. */
+  --color-gold: #825a0e;
   --color-gold-bright: #d3a43e;
   --color-gold-soft: #f1e4c3;
   --color-black: #11110f;
@@ -104,6 +105,20 @@ html {
   scroll-padding-top: calc(var(--header-height) + 2rem);
 }
 
+/*
+ * Lock the root scrolling element while the narrow-screen menu is open.
+ * The body remains unlocked so its sticky header does not leave the viewport
+ * when a menu is opened after the visitor has already scrolled down.
+ */
+html.menu-is-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.menu-is-open {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
   min-width: 18rem;
@@ -149,7 +164,7 @@ a {
 }
 
 :focus-visible {
-  outline: 0.2rem solid var(--color-gold-bright);
+  outline: 0.2rem solid var(--color-gold);
   outline-offset: 0.22rem;
 }
 
@@ -222,11 +237,47 @@ ul:last-child {
 }
 
 .section {
-  padding-block: clamp(4.5rem, 9vw, 8rem);
+  padding-block: clamp(3.75rem, 7vw, 6.5rem);
 }
 
 .section--tight {
-  padding-block: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+/*
+ * Breadcrumbs give visitors a compact location trail on every page below
+ * Home. The ordered list communicates that hierarchy to assistive tools.
+ */
+.breadcrumbs {
+  padding-block: 1rem 0.25rem;
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  list-style: none;
+}
+
+.breadcrumbs li + li::before {
+  margin-right: 0.45rem;
+  color: var(--color-gold);
+  content: "/";
+}
+
+.breadcrumbs a {
+  color: var(--color-gold);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
 }
 
 .section--surface {
@@ -320,6 +371,22 @@ ul:last-child {
   border-bottom: 1px solid var(--color-line);
   background: color-mix(in srgb, var(--color-page) 90%, transparent);
   backdrop-filter: blur(18px);
+}
+
+/*
+ * JavaScript reveals this layer only behind the open mobile navigation.
+ * The header has a higher stacking level, keeping the menu fully usable.
+ */
+.menu-backdrop {
+  position: fixed;
+  z-index: 90;
+  background: rgb(0 0 0 / 48%);
+  inset: 0;
+  backdrop-filter: blur(2px);
+}
+
+.menu-backdrop[hidden] {
+  display: none;
 }
 
 .header-inner {
@@ -475,13 +542,61 @@ ul:last-child {
   transform: none;
 }
 
+/*
+ * The back-to-top control is intentionally compact and temporary. JavaScript
+ * hides it after scrolling stops so it cannot cover text while visitors read.
+ */
+.back-to-top {
+  position: fixed;
+  z-index: 85;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  transform: translateY(0.75rem);
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  opacity: 0;
+  background: var(--color-text);
+  box-shadow: var(--shadow-card);
+  color: var(--color-page);
+  cursor: pointer;
+  pointer-events: none;
+  place-items: center;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.back-to-top.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: var(--color-gold);
+  color: #fff;
+}
+
+.back-to-top span {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+/* Never place the floating control above an open navigation backdrop. */
+.menu-is-open .back-to-top {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    8. HERO AND PAGE INTRODUCTIONS
    ============================================================ */
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(4.5rem, 9vw, 8.5rem);
+  padding-block: clamp(3.75rem, 7vw, 7rem);
 }
 
 .hero::after {
@@ -527,12 +642,57 @@ ul:last-child {
 }
 
 .page-hero {
-  padding-block: clamp(4rem, 8vw, 7rem);
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
   border-bottom: 1px solid var(--color-line);
 }
 
 .page-hero .lead {
   margin-bottom: 1.8rem;
+}
+
+/*
+ * Studio-section shortcuts remain a single row. On a narrow screen the row
+ * scrolls sideways instead of wrapping into a tall block above the content.
+ */
+.section-jump-shell {
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.section-jump {
+  display: flex;
+  padding-block: 1rem;
+  align-items: center;
+  gap: 0.65rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.section-jump-label {
+  flex: 0 0 auto;
+  color: var(--color-text-soft);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.section-jump a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  flex: 0 0 auto;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: 99rem;
+  background: var(--color-page);
+  color: var(--color-text);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.section-jump a:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
 }
 
 /* ============================================================
@@ -902,6 +1062,11 @@ ul:last-child {
 
   .carousel-slide {
     min-height: 20rem;
+  }
+
+  .back-to-top {
+    width: 2.8rem;
+    height: 2.8rem;
   }
 }
 

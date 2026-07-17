@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Source-provided overview of Abhinav Creations studio spaces and gear.">
-    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="icon" href="assets/images/logo-160.png" type="image/png">
     <meta name="color-scheme" content="light dark">
     <title>Studio Spaces &amp; Gear | Abhinav Creations</title>
     <!-- Restore the saved theme before painting to minimize a wrong-theme flash. -->
@@ -19,7 +19,7 @@
     <!-- Shared header; aria-current identifies this page to assistive technology. -->
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="index.html" aria-label="Abhinav Creations home"><img src="logo.png" alt="" width="1254" height="1254"><span class="brand-name">Abhinav<small>Creations</small></span></a>
+        <a class="brand" href="index.html" aria-label="Abhinav Creations home"><img src="assets/images/logo-160.png" alt="" width="160" height="160"><span class="brand-name">Abhinav<small>Creations</small></span></a>
         <nav class="site-nav" id="primary-navigation" data-site-navigation aria-label="Primary navigation">
           <a href="index.html">Home</a><a href="studio-spaces.html" aria-current="page">Studio Spaces &amp; Gear</a><a href="creators-actors.html">Creators &amp; Actors</a><a href="brands-businesses.html">Brands &amp; Businesses</a><a href="pricing-booking.html">Pricing &amp; Live Booking</a><a href="contact.html">Contact Us</a>
         </nav>
@@ -32,6 +32,11 @@
     </header>
 
     <main id="main-content">
+      <!-- Breadcrumb: a compact location trail back to the Home page. -->
+      <nav class="breadcrumbs container" aria-label="Breadcrumb">
+        <ol><li><a href="index.html">Home</a></li><li aria-current="page">Studio Spaces &amp; Gear</li></ol>
+      </nav>
+
       <!-- Page introduction: this page is the technical-proof pathway in the outline. -->
       <section class="page-hero">
         <div class="container">
@@ -42,8 +47,19 @@
         </div>
       </section>
 
+      <!-- In-page shortcuts reduce scrolling across the four studio areas. -->
+      <nav class="section-jump-shell" aria-label="Studio section navigation">
+        <div class="container section-jump">
+          <span class="section-jump-label">Jump to:</span>
+          <a href="#visual-master-floor">Studio Floor</a>
+          <a href="#audio-suite">Audio Suite</a>
+          <a href="#podcast-lounge">Podcast Lounge</a>
+          <a href="#cooking-stage">Cooking Stage</a>
+        </div>
+      </nav>
+
       <!-- 2.1 Visual Master Floor -->
-      <section class="section" aria-labelledby="visual-floor-heading">
+      <section class="section" id="visual-master-floor" aria-labelledby="visual-floor-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
             <span class="eyebrow">2.1 · Visual Master Floor</span>
@@ -57,7 +73,7 @@
       </section>
 
       <!-- 2.2 Acoustic Audio Hub -->
-      <section class="section section--surface" aria-labelledby="audio-hub-heading">
+      <section class="section section--surface" id="audio-suite" aria-labelledby="audio-hub-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
             <span class="eyebrow">2.2 · Acoustic Audio Hub</span>
@@ -71,7 +87,7 @@
       </section>
 
       <!-- 2.3 Podcast Lounge -->
-      <section class="section" aria-labelledby="podcast-heading">
+      <section class="section" id="podcast-lounge" aria-labelledby="podcast-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
             <span class="eyebrow">2.3 · Podcast Lounge</span>
@@ -85,7 +101,7 @@
       </section>
 
       <!-- 2.4 Commercial Kitchen Setup -->
-      <section class="section section--surface" aria-labelledby="kitchen-heading">
+      <section class="section section--surface" id="cooking-stage" aria-labelledby="kitchen-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
             <span class="eyebrow">2.4 · Commercial Kitchen Setup</span>

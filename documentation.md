@@ -20,7 +20,7 @@ HTML supplies the content and structure
         |
         +---- CSS controls appearance and responsive layout
         |
-        `---- JavaScript adds the menu, theme toggle, and carousel
+        `---- JavaScript adds the menu, theme toggle, carousel, and Top button
         |
         v
 Browser displays the finished page
@@ -65,8 +65,9 @@ This tells the browser that an element with `class="card"` receives a border and
 JavaScript provides the interactive behavior:
 
 1. Light/dark-mode toggle
-2. Narrow-screen navigation menu
+2. Narrow-screen navigation menu with a backdrop and page-scroll lock
 3. Manual Home page carousel
+4. Reading-friendly back-to-top button
 
 The site does not use React, Jekyll, a JavaScript framework, or a package manager.
 
@@ -91,11 +92,15 @@ abhinav-creations/
 |-- assets/
 |   |-- css/
 |   |   `-- styles.css          All visual and responsive rules
+|   |-- images/
+|   |   |-- logo-160.png        Optimized header and favicon logo
+|   |   `-- logo-800.png        Optimized Home hero logo
 |   `-- js/
 |       `-- main.js             All interactive behavior
 |
-|-- logo.png                    Supplied Abhinav Creations logo
+|-- logo.png                    Original supplied high-resolution logo
 |-- project_plan.md             Approved scope and plan
+|-- UX_improvements.MD          UX proposals and implementation record
 |-- documentation.md            This beginner code guide
 |-- checklist.md                Completed and pending work
 `-- readme.md                   Short project entry point
@@ -115,7 +120,7 @@ Most pages follow this structure:
     skip link
     pre-launch notice
     shared sticky header
-    <main>  page-specific content
+    <main>  breadcrumb on internal pages, then page-specific content
     shared footer
 ```
 
@@ -172,9 +177,24 @@ LOGO | theme button | menu button
 
 `aria-current="page"` identifies the current page. The menu button uses `aria-expanded` so assistive technology can tell whether the menu is open.
 
+On a narrow screen, opening the menu also:
+
+- Places a shaded backdrop behind the menu.
+- Prevents the page underneath from scrolling.
+- Allows a pointer selection outside the panel to close it.
+- Continues to support the Escape key and ordinary link selection.
+
 ### The main content
 
 Each page has exactly one `<main>` element and one primary `<h1>` heading. Sections use `<h2>` and `<h3>` in hierarchical order.
+
+Every non-home page begins its main content with a breadcrumb. The breadcrumb is an ordered list inside a navigation landmark, for example:
+
+```text
+Home / Studio Spaces & Gear
+```
+
+The Studio Spaces page also has four in-page jump links. Their `href` values match section `id` values, and the visitor-facing Sitemap contains the same destinations.
 
 ### The shared footer
 
@@ -207,6 +227,14 @@ Open [`assets/css/styles.css`](assets/css/styles.css). It is organized into numb
 12. Footer
 13. Responsive rules
 14. Reduced-motion support
+
+The shared component rules now also include:
+
+- Breadcrumb appearance.
+- Mobile-menu backdrop and document scroll lock.
+- Back-to-top button states.
+- Studio section-jump links.
+- Moderately reduced page and section spacing.
 
 ### Design tokens
 
@@ -277,7 +305,8 @@ DOMContentLoaded
       |
       +-- initializeThemeToggle()
       +-- initializeNavigation()
-      `-- initializeCarousels()
+      +-- initializeCarousels()
+      `-- initializeBackToTopButton()
 ```
 
 Each function first checks whether its required element exists. If the component is absent, it safely stops. This allows one JavaScript file to be shared by every page.
@@ -304,10 +333,11 @@ Browser storage can be blocked. `safelyReadStorage()` and `safelyWriteStorage()`
 ### Navigation feature
 
 ```text
-Menu button click --> open/close menu --> update aria-expanded
-Link selected     --> close menu
-Escape pressed    --> close menu and return focus to button
-Screen becomes wide --> reset narrow menu state
+Menu button click   --> open menu + backdrop + page-scroll lock
+Link selected       --> close menu
+Outside press       --> close menu and return focus to button
+Escape pressed      --> close menu and return focus to button
+Screen becomes wide --> reset menu, backdrop, and scroll lock
 ```
 
 ### Carousel feature
@@ -324,7 +354,30 @@ Next button or Right Arrow    --> show next item
 
 Only one slide has the `is-active` class at a time. The JavaScript also updates `aria-hidden` for assistive technology.
 
-## 8. Content and anti-fabrication rules
+### Back-to-top feature
+
+The Top button is created by JavaScript so identical markup does not have to be copied into every HTML file.
+
+```text
+Page is above 700 pixels scrolled --> button is hidden
+Page scrolls below that point      --> button appears temporarily
+No movement for 2.5 seconds        --> button hides so text is unobstructed
+Button is hovered or focused       --> hiding pauses
+Button is selected                 --> page returns to top
+```
+
+The button is removed from keyboard navigation whenever it is visually hidden. After activation, focus moves to the page's main heading instead of remaining on an invisible control. Smooth scrolling is disabled when the visitor requests reduced motion.
+
+## 8. Image optimization
+
+The original `logo.png` remains unchanged as the supplied high-resolution source. Two smaller derivatives are used by the website:
+
+- `assets/images/logo-160.png` for headers and favicons.
+- `assets/images/logo-800.png` for the large Home hero card.
+
+This avoids sending the original 1254-pixel, approximately 820 KB image every time the small header logo is displayed. The HTML width and height attributes match each optimized file, which also helps the browser reserve the correct square space before the image finishes loading.
+
+## 9. Content and anti-fabrication rules
 
 The supplied Word outline controls the service structure and wording. Missing facts are never replaced with realistic-looking samples.
 
@@ -340,7 +393,7 @@ Examples:
 
 Placeholder panels explain exactly what is missing.
 
-## 9. Compliance boundary
+## 10. Compliance boundary
 
 The project is stored in a GitHub repository, but no GitHub Pages deployment workflow is included.
 
@@ -359,7 +412,7 @@ Live booking without approved provider        NOT IMPLEMENTED
 
 A compliant commercial production host must be selected before launch. The static code remains portable.
 
-## 10. Why booking and contact are disabled
+## 11. Why booking and contact are disabled
 
 ### Booking
 
@@ -371,7 +424,7 @@ Secret credentials must never be stored in public JavaScript.
 
 A contact form needs approved fields, a delivery/processing service, privacy wording, retention rules, and a destination. None were supplied, so the page collects no information.
 
-## 11. Why `sitemap.xml` and `robots.txt` are pending
+## 12. Why `sitemap.xml` and `robots.txt` are pending
 
 The human-facing [`sitemap.html`](sitemap.html) exists and works locally.
 
@@ -383,7 +436,7 @@ The XML sitemap must contain full final public addresses:
 
 The final domain and production host are not selected, so inserting an invented domain would be technically wrong. `sitemap.xml` and its `robots.txt` reference will be created after the final public URL is known.
 
-## 12. How to preview the website locally
+## 13. How to preview the website locally
 
 Opening `index.html` directly may work for basic viewing, but a local web server more closely matches real hosting and provides predictable browser storage behavior.
 
@@ -402,7 +455,7 @@ http://127.0.0.1:8000/
 
 Stop the server by returning to the terminal and pressing `Ctrl+C`.
 
-## 13. How to make common changes
+## 14. How to make common changes
 
 ### Change a page sentence
 
@@ -442,7 +495,7 @@ Because the shared markup is repeated:
 2. Search the repository for the old text to ensure no copy remains.
 3. Test links and layout on representative pages.
 
-## 14. Testing expectations
+## 15. Testing expectations
 
 Before launch, verify:
 
@@ -462,4 +515,3 @@ Before launch, verify:
 - Final production-host rules
 
 Current implementation status and remaining inputs are tracked in [`checklist.md`](checklist.md).
-

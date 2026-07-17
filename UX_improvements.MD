@@ -1,8 +1,8 @@
 # Abhinav Creations UX/UI Improvement Checklist
 
-**Document status:** Proposal only  
+**Document status:** Living UX checklist and implementation record
 **Last updated:** July 17, 2026  
-**Implementation status:** These recommendations have not been implemented unless they are separately marked complete in `checklist.md`.
+**Implementation status:** Approved items are marked complete below and summarized in the final "Already implemented" section. `checklist.md` remains the project-wide source of truth.
 
 ## How to use this checklist
 
@@ -22,7 +22,7 @@ Items are separated into:
 
 ### 1. Back-to-top button
 
-- [ ] Add a floating button in the bottom-right corner.
+- [x] Add a floating button in the bottom-right corner.
 - It appears after the visitor scrolls approximately 600 to 800 pixels.
 - Selecting it returns the visitor to the top.
 - It disappears again near the top.
@@ -62,19 +62,19 @@ Button hides again
 
 ### 2. Mobile menu backdrop
 
-- [ ] Add a slightly darkened layer behind the open mobile menu.
+- [x] Add a slightly darkened layer behind the open mobile menu.
 - This visually separates the menu from the page.
 - It makes the currently active menu easier to understand.
 - It would work in both light and dark modes.
 
 ### 3. Close the mobile menu by selecting outside it
 
-- [ ] Allow visitors to close the menu by tapping or clicking outside the menu panel.
+- [x] Allow visitors to close the menu by tapping or clicking outside the menu panel.
 - The existing menu button, navigation links, and Escape key would continue working.
 
 ### 4. Lock background scrolling while the mobile menu is open
 
-- [ ] Prevent the page behind the menu from moving.
+- [x] Prevent the page behind the menu from moving.
 - This avoids losing the visitor's position while they are interacting with navigation.
 - Normal page scrolling returns when the menu closes.
 
@@ -82,14 +82,14 @@ Items 2, 3, and 4 work well as one combined mobile-menu improvement.
 
 ### 5. Reduce excessive vertical spacing
 
-- [ ] Moderately reduce large empty spaces in page introductions and content sections.
+- [x] Moderately reduce large empty spaces in page introductions and content sections.
 - Visitors will reach useful content sooner.
 - This is especially helpful on phones.
 - The spacious visual style would remain, but the pages would feel less stretched.
 
 ### 6. Add "Jump to section" navigation
 
-- [ ] Add section shortcuts to the Studio Spaces & Gear page.
+- [x] Add section shortcuts to the Studio Spaces & Gear page.
 
 Example sections:
 
@@ -129,7 +129,7 @@ This prevents visitors from expecting an active booking system. The original tex
 
 ### 9. Add breadcrumbs
 
-- [ ] Add a small location trail near the top of internal pages.
+- [x] Add a small location trail near the top of internal pages.
 
 Example:
 
@@ -150,7 +150,7 @@ The carousel would continue avoiding autoplay. Real captions and video controls 
 
 ### 11. Optimize the logo asset
 
-- [ ] Create a smaller optimized version of the logo for website use.
+- [x] Create a smaller optimized version of the logo for website use.
 - The current source image is `1254 x 1254`, which is larger than necessary for the header.
 - The original high-resolution file would remain unchanged.
 - The website could use appropriately sized versions for the header and hero section.
@@ -159,13 +159,13 @@ This would reduce file size and mobile data usage without visibly reducing quali
 
 ### 12. Perform an expanded accessibility review
 
-- [ ] Test keyboard navigation again after the UX changes.
-- [ ] Check contrast in light and dark modes.
-- [ ] Test browser zoom.
-- [ ] Check touch-target sizes.
-- [ ] Confirm screen-reader labels.
-- [ ] Confirm reduced-motion behavior.
-- [ ] Check for horizontal overflow.
+- [x] Test keyboard navigation again after the UX changes.
+- [x] Check contrast in light and dark modes.
+- [x] Test browser zoom and narrow-screen reflow.
+- [x] Check touch-target sizes.
+- [x] Confirm screen-reader labels.
+- [x] Confirm reduced-motion behavior.
+- [x] Check for horizontal overflow.
 
 This is most useful after the selected UX improvements are implemented.
 
@@ -392,3 +392,24 @@ These changes would improve the experience immediately without inventing content
 ## Approval note
 
 This is a recommendation checklist. It does not authorize implementation by itself. Selected items should be approved by number, implemented, tested, and then recorded in `checklist.md`.
+
+## Already implemented
+
+The following UX/UI work is present in the current local build:
+
+1. **Back-to-top control (item 1):** Appears only after substantial scrolling, stays away from the main reading column, and auto-hides after approximately 2.5 seconds without scrolling so it does not continue covering page content. It reappears on new scrolling, remains visible during hover or keyboard focus, respects reduced-motion preferences, and returns keyboard focus to the page heading.
+2. **Mobile menu backdrop (item 2):** A shaded backdrop separates the open menu from the page in both themes.
+3. **Outside-click closing (item 3):** Tapping or clicking outside the mobile menu closes it and returns focus to the menu button.
+4. **Background scroll lock (item 4):** The page cannot move behind an open mobile menu, and the visitor's position is preserved when it closes.
+5. **Reduced vertical spacing (item 5):** Hero and content-section spacing is more compact while retaining the spacious visual design.
+6. **Studio jump navigation (item 6):** The Studio page links directly to Studio Floor, Audio Suite, Podcast Lounge, and Cooking Stage. The visitor sitemap contains the same four section links and matching anchors.
+7. **Breadcrumbs (item 9):** Every public page except Home has a small, accessible path back to Home.
+8. **Optimized logos (item 11):** The original 1254 px source remains unchanged. A 160 px asset serves header and favicon use, while an 800 px asset serves the Home hero.
+9. **Expanded accessibility review (item 12):** Keyboard operation, focus restoration, accessible labels, light/dark contrast, narrow-screen/high-zoom reflow, 44 px mobile targets, reduced motion, and horizontal overflow were checked after implementation. A light-theme gold contrast issue and a menu scroll-lock/sticky-header conflict found during testing were corrected.
+10. **Responsive rendering:** The same website adapts to desktop and mobile widths with flexible layouts, stacking content, and far-right mobile theme/menu controls.
+11. **Theme support:** Light and dark modes follow the device preference initially and remember the visitor's selection when browser storage is available.
+12. **Accessible navigation foundation:** Skip links, semantic landmarks, active-page states, visible keyboard focus, Escape-key menu closing, and a sticky header are implemented.
+13. **Level square logo presentation:** The Home hero logo is displayed as a clean 1:1 square without stretching, tilt, or an extra decorative offset border.
+14. **Manual media carousel:** Previous, next, and keyboard controls are available without autoplay; placeholders remain clearly identified until approved media is supplied.
+15. **Visitor sitemap:** Every public page is listed, including the four current Studio section anchors.
+16. **Public copy cleanup:** Em dashes were replaced with standard hyphens throughout the visitor-facing HTML.

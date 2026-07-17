@@ -131,6 +131,7 @@
 ## 11. Sitemaps and search discovery
 
 - [x] Visitor-facing `sitemap.html` exists and links every public content page.
+- [x] Visitor-facing Sitemap links the same four Studio section anchors shown by the Studio jump navigation.
 - [ ] Select the final production host and public domain.
 - [ ] Create `sitemap.xml` using final absolute public URLs.
 - [ ] Create `robots.txt` with the final absolute sitemap URL.
@@ -163,6 +164,11 @@
 - [x] Test carousel previous/next buttons and arrow keys.
 - [x] Check for unintended horizontal scrolling at a representative narrow width.
 - [x] Check keyboard-operable controls, focus handling, labels, landmarks, and heading semantics.
+- [x] Test the new back-to-top control's reveal, inactivity auto-hide, reduced-motion behavior, and heading-focus return.
+- [x] Test mobile-menu backdrop, outside selection, Escape closing, focus restoration, and background scroll lock.
+- [x] Verify the Studio jump navigation and visitor Sitemap use the same four valid section anchors.
+- [x] Check light/dark contrast and correct the light-theme gold used for small text and controls.
+- [x] Verify 44 px mobile control targets and narrow-screen/high-zoom reflow at 320 px without horizontal overflow.
 - [x] Correct all defects found during the implemented-scope QA.
 
 ## 14. Deployment status
@@ -173,3 +179,16 @@
 - [ ] Final integrations approved and tested.
 - [ ] Final compliance review complete.
 - [ ] Production deployment complete.
+
+## 15. Approved UX improvement batch
+
+- [x] UX item 1: reading-friendly back-to-top button appears only after substantial scrolling and auto-hides during reading inactivity.
+- [x] UX item 1: hidden Top button is removed from keyboard navigation and activation moves focus to the page heading.
+- [x] UX item 2: mobile navigation has a light/dark compatible shaded backdrop.
+- [x] UX item 3: selecting outside the open mobile navigation closes it.
+- [x] UX item 4: background page scrolling locks while the mobile navigation is open.
+- [x] UX item 5: excessive hero and section spacing is moderately reduced.
+- [x] UX item 6: Studio Spaces page has matching jump links and section anchors.
+- [x] UX item 9: every non-home public page has an accessible breadcrumb.
+- [x] UX item 11: original logo is preserved and optimized 160 px/800 px delivery assets are used.
+- [x] UX item 12: expanded post-change accessibility review completed and defects found were corrected.

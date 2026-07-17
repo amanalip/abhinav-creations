@@ -1,10 +1,11 @@
 /**
  * ABHINAV CREATIONS — SHARED WEBSITE BEHAVIOR
  * ------------------------------------------------------------------
- * This file provides three small, independent features:
+ * This file provides four small, independent features:
  *   1. a light/dark theme toggle,
  *   2. an accessible narrow-screen navigation menu, and
- *   3. a manual portfolio carousel on the Home page.
+ *   3. a manual portfolio carousel on the Home page, and
+ *   4. a reading-friendly back-to-top button.
  *
  * The website's core content remains ordinary HTML. If JavaScript is
  * unavailable, visitors can still read the pages and follow normal
@@ -22,6 +23,8 @@ const SITE_CONFIG = {
   darkTheme: "dark",
   lightTheme: "light",
   wideNavigationQuery: "(min-width: 68.001rem)",
+  backToTopRevealOffset: 700,
+  backToTopHideDelay: 2500,
 };
 
 /**
@@ -144,10 +147,45 @@ function initializeNavigation() {
     return;
   }
 
-  const setMenuState = (isOpen) => {
+  /*
+   * The backdrop is created by JavaScript because it is useful only when
+   * the JavaScript-controlled menu can open. Keeping it out of the HTML
+   * also means there is no empty decorative element when scripts are off.
+   */
+  const backdrop = document.createElement("div");
+  backdrop.className = "menu-backdrop";
+  backdrop.hidden = true;
+  backdrop.setAttribute("aria-hidden", "true");
+  document.body.append(backdrop);
+
+  /**
+   * Open or close every part of the mobile-navigation experience together.
+   * The page-scroll lock and backdrop must never get out of sync with the
+   * navigation panel's visible and accessible state.
+   *
+   * @param {boolean} isOpen - Whether the mobile navigation should be open.
+   * @param {boolean} restoreFocus - Whether focus should return to its button.
+   */
+  const setMenuState = (isOpen, restoreFocus = false) => {
+    const backToTopButton = document.querySelector("[data-back-to-top]");
+
     navigation.classList.toggle("is-open", isOpen);
+    document.documentElement.classList.toggle("menu-is-open", isOpen);
+    document.body.classList.toggle("menu-is-open", isOpen);
+    backdrop.hidden = !isOpen;
     menuButton.setAttribute("aria-expanded", String(isOpen));
     menuButton.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+
+    /* The visually hidden Top button must not remain in the Tab sequence. */
+    if (backToTopButton) {
+      const topButtonShouldBeAvailable = !isOpen && backToTopButton.classList.contains("is-visible");
+      backToTopButton.tabIndex = topButtonShouldBeAvailable ? 0 : -1;
+      backToTopButton.setAttribute("aria-hidden", String(!topButtonShouldBeAvailable));
+    }
+
+    if (!isOpen && restoreFocus) {
+      menuButton.focus();
+    }
   };
 
   menuButton.addEventListener("click", () => {
@@ -160,10 +198,23 @@ function initializeNavigation() {
     }
   });
 
+  /*
+   * A pointer press anywhere outside both the panel and its toggle closes the
+   * menu. This covers the shaded page, the brand, and the theme control.
+   */
+  document.addEventListener("click", (event) => {
+    const menuIsOpen = menuButton.getAttribute("aria-expanded") === "true";
+    const selectedInsideMenu = navigation.contains(event.target);
+    const selectedMenuButton = menuButton.contains(event.target);
+
+    if (menuIsOpen && !selectedInsideMenu && !selectedMenuButton) {
+      setMenuState(false, true);
+    }
+  });
+
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") {
-      setMenuState(false);
-      menuButton.focus();
+      setMenuState(false, true);
     }
   });
 
@@ -172,6 +223,94 @@ function initializeNavigation() {
       setMenuState(false);
     }
   });
+}
+
+/**
+ * Add a back-to-top button without repeating markup on every HTML page.
+ *
+ * The button appears only after a meaningful amount of scrolling. It hides
+ * after scrolling stops so that it does not cover text while someone reads.
+ * Hover and keyboard focus pause that timer so the control does not disappear
+ * while a visitor is trying to use it.
+ */
+function initializeBackToTopButton() {
+  const button = document.createElement("button");
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let hideTimer = null;
+
+  button.className = "back-to-top";
+  button.type = "button";
+  button.tabIndex = -1;
+  button.dataset.backToTop = "";
+  button.setAttribute("aria-label", "Back to top");
+  button.setAttribute("aria-hidden", "true");
+  button.title = "Back to top";
+  button.innerHTML = '<span aria-hidden="true">↑</span>';
+  document.body.append(button);
+
+  /** Hide the button completely from pointing and keyboard interaction. */
+  const hideButton = () => {
+    window.clearTimeout(hideTimer);
+    button.classList.remove("is-visible");
+    button.tabIndex = -1;
+    button.setAttribute("aria-hidden", "true");
+  };
+
+  /** Start the inactivity timer unless the visitor is using the button. */
+  const scheduleHide = () => {
+    window.clearTimeout(hideTimer);
+
+    if (button.matches(":hover") || document.activeElement === button) {
+      return;
+    }
+
+    hideTimer = window.setTimeout(hideButton, SITE_CONFIG.backToTopHideDelay);
+  };
+
+  /** Show the button temporarily only when the page is sufficiently scrolled. */
+  const respondToScroll = () => {
+    const mobileMenuIsOpen = document.documentElement.classList.contains("menu-is-open");
+
+    if (window.scrollY < SITE_CONFIG.backToTopRevealOffset || mobileMenuIsOpen) {
+      hideButton();
+      return;
+    }
+
+    button.classList.add("is-visible");
+    button.tabIndex = 0;
+    button.setAttribute("aria-hidden", "false");
+    scheduleHide();
+  };
+
+  window.addEventListener("scroll", respondToScroll, { passive: true });
+  button.addEventListener("pointerenter", () => window.clearTimeout(hideTimer));
+  button.addEventListener("pointerleave", scheduleHide);
+  button.addEventListener("focus", () => window.clearTimeout(hideTimer));
+  button.addEventListener("blur", scheduleHide);
+
+  button.addEventListener("click", () => {
+    const heading = document.querySelector("h1");
+
+    window.scrollTo({
+      top: 0,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
+
+    /*
+     * Move keyboard focus to the page heading after scrolling. This prevents
+     * focus from remaining on a control that becomes hidden near the top.
+     */
+    if (heading) {
+      window.setTimeout(() => {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+        heading.addEventListener("blur", () => heading.removeAttribute("tabindex"), { once: true });
+      }, reducedMotionQuery.matches ? 0 : 450);
+    }
+  });
+
+  /* Handle a restored browser scroll position after a reload. */
+  respondToScroll();
 }
 
 /**
@@ -230,4 +369,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeThemeToggle();
   initializeNavigation();
   initializeCarousels();
+  initializeBackToTopButton();
 });
