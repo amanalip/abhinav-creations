@@ -23,6 +23,7 @@
 - [x] Custom `404.html` error page.
 - [x] Skip links and semantic page landmarks.
 - [x] Visible pre-launch notice.
+- [x] Visitor-facing HTML copy uses standard hyphens instead of em dashes.
 
 ## 3. Responsive rendering
 
