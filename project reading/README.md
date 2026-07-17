@@ -48,6 +48,11 @@ Start
   +--> 22 Browser DevTools
   +--> 23 CI/CD and quality checks
   +--> 24 Performance, SEO, discoverability
+  +--> 25 Requirements traceability map
+  +--> 26 FAQs and common mistakes
+  +--> 27 Architecture decision records
+  +--> 28 Release and change management
+  +--> 29 Interview questions and answers
   +--> AGENTS template
 ~~~
 
@@ -79,6 +84,11 @@ Start
 | Debug a page manually | [22 - Browser DevTools](22-browser-developer-tools-and-debugging.md) |
 | Understand automated checks and delivery | [23 - CI/CD and quality checks](23-ci-cd-and-automated-quality-checks.md) |
 | Prepare performance and search discovery | [24 - Performance, SEO, and discoverability](24-performance-seo-and-discoverability.md) |
+| Trace requirements from request through implementation and verification | [25 - Requirements traceability map](25-requirements-traceability-map.md) |
+| Find beginner answers and avoid recurring errors | [26 - Frequently asked questions and common mistakes](26-frequently-asked-questions-and-common-mistakes.md) |
+| Understand why major architecture choices were made | [27 - Architecture decision records](27-architecture-decision-records.md) |
+| Plan, approve, publish, verify, and roll back changes | [28 - Release and change management](28-release-and-change-management.md) |
+| Prepare for frontend, system-design, QA, and Codex interviews | [29 - Interview questions and answers](29-interview-questions-and-answers.md) |
 | Create repository instructions for an AI agent | [AGENTS template](AGENTS-template.md) |
 
 ## Suggested learning paths
@@ -110,6 +120,22 @@ Start
 02 Website architecture -> 18 Design patterns
  -> 16 Codex/Playwright architecture -> 19 Platforms
  -> 23 CI/CD -> 14 Security boundaries
+ -> 27 Architecture decisions -> 29 Interview practice
+~~~
+
+### Project owner or maintainer
+
+~~~text
+01 Overview -> 25 Requirements traceability
+ -> 27 Architecture decisions -> 28 Release/change management
+ -> 13 Content governance -> 12 Maintenance/troubleshooting
+~~~
+
+### Quick problem-solving path
+
+~~~text
+26 FAQs/common mistakes -> 12 Troubleshooting
+ -> 22 Browser DevTools -> 06 Browser QA
 ~~~
 
 ## Current project truth in one minute
@@ -124,6 +150,7 @@ Start
 - Prices, business claims, legal wording, and other launch information still require owner approval where marked.
 - Browser QA was performed with Playwright tooling, but the repository does not currently contain a reusable automated Playwright test suite.
 - Website-wide search was discussed and deliberately deferred.
+- A GitHub Pages workflow currently exists, while parts of the root plan/checklist record a conflicting production-hosting decision; [the traceability map](25-requirements-traceability-map.md) records this discrepancy for owner resolution.
 
 ## How to use the examples
 
@@ -143,7 +170,7 @@ When the website changes:
 
 ## Sanity check
 
-- [x] All 25 companion documents are linked from this README; together with this README, the expanded handbook contains 26 Markdown files.
+- [x] All 30 companion documents are linked from this README; together with this README, the expanded handbook contains 31 Markdown files.
 - [x] Every link uses a relative path suitable for GitHub.
 - [x] Implemented, pending, and suggested features are separated.
-- [x] GitHub Pages, Playwright, and architecture claims match the repository as reviewed on 17 July 2026.
+- [x] GitHub Pages, Playwright, and architecture claims match the repository as reviewed on 17 July 2026, including the explicitly recorded hosting-documentation discrepancy.
