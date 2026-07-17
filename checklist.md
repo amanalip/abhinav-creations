@@ -132,6 +132,7 @@
 
 - [x] Visitor-facing `sitemap.html` exists and links every public content page.
 - [x] Visitor-facing Sitemap links the same four Studio section anchors shown by the Studio jump navigation.
+- [x] Visitor-facing Sitemap links the same three creator-service anchors shown by the Creators & Actors navigation.
 - [ ] Select the final production host and public domain.
 - [ ] Create `sitemap.xml` using final absolute public URLs.
 - [ ] Create `robots.txt` with the final absolute sitemap URL.
@@ -167,6 +168,8 @@
 - [x] Test the new back-to-top control's reveal, inactivity auto-hide, reduced-motion behavior, and heading-focus return.
 - [x] Test mobile-menu backdrop, outside selection, Escape closing, focus restoration, and background scroll lock.
 - [x] Verify the Studio jump navigation and visitor Sitemap use the same four valid section anchors.
+- [x] Verify the Creators & Actors navigation and visitor Sitemap use the same three valid service anchors.
+- [x] Test sticky desktop link rows, compact mobile selectors, current-section tracking, and unobstructed anchor landing positions on both long pages.
 - [x] Check light/dark contrast and correct the light-theme gold used for small text and controls.
 - [x] Verify 44 px mobile control targets and narrow-screen/high-zoom reflow at 320 px without horizontal overflow.
 - [x] Correct all defects found during the implemented-scope QA.
@@ -188,7 +191,7 @@
 - [x] UX item 3: selecting outside the open mobile navigation closes it.
 - [x] UX item 4: background page scrolling locks while the mobile navigation is open.
 - [x] UX item 5: excessive hero and section spacing is moderately reduced.
-- [x] UX item 6: Studio Spaces page has matching jump links and section anchors.
+- [x] UX item 6: Studio Spaces and Creators & Actors have persistent, responsive section navigation with matching Sitemap anchors.
 - [x] UX item 9: every non-home public page has an accessible breadcrumb.
 - [x] UX item 11: original logo is preserved and optimized 160 px/800 px delivery assets are used.
 - [x] UX item 12: expanded post-change accessibility review completed and defects found were corrected.

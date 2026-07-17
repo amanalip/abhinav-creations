@@ -1,11 +1,12 @@
 /**
  * ABHINAV CREATIONS — SHARED WEBSITE BEHAVIOR
  * ------------------------------------------------------------------
- * This file provides four small, independent features:
+ * This file provides five small, independent features:
  *   1. a light/dark theme toggle,
- *   2. an accessible narrow-screen navigation menu, and
- *   3. a manual portfolio carousel on the Home page, and
- *   4. a reading-friendly back-to-top button.
+ *   2. an accessible narrow-screen navigation menu,
+ *   3. persistent navigation on the two long comparison pages,
+ *   4. a manual portfolio carousel on the Home page, and
+ *   5. a reading-friendly back-to-top button.
  *
  * The website's core content remains ordinary HTML. If JavaScript is
  * unavailable, visitors can still read the pages and follow normal
@@ -314,6 +315,106 @@ function initializeBackToTopButton() {
 }
 
 /**
+ * Keep persistent in-page navigation synchronized with the section currently
+ * visible on screen.
+ *
+ * Each enhanced page contains ordinary anchor links plus a native select:
+ * - desktop visitors see the anchor links;
+ * - mobile visitors see the compact select;
+ * - without JavaScript, the ordinary links remain available at every width.
+ *
+ * The function updates aria-current on the desktop links and the selected
+ * mobile option. It deliberately does not rewrite the URL during ordinary
+ * scrolling, which avoids filling browser history with passive scroll events.
+ */
+function initializeSectionNavigation() {
+  const navigators = document.querySelectorAll("[data-section-navigation]");
+  let atLeastOneNavigatorWasEnhanced = false;
+
+  navigators.forEach((navigator) => {
+    const links = Array.from(navigator.querySelectorAll("[data-section-links] a[href^='#']"));
+    const select = navigator.querySelector("[data-section-select]");
+    const sections = links
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+
+    /* Do not replace the fallback links unless every required part exists. */
+    if (!select || links.length === 0 || sections.length !== links.length) {
+      return;
+    }
+
+    atLeastOneNavigatorWasEnhanced = true;
+    let updateRequested = false;
+
+    /** Synchronize both controls without causing navigation or focus changes. */
+    const showActiveSection = (activeSection) => {
+      const activeHash = `#${activeSection.id}`;
+
+      links.forEach((link) => {
+        const isActive = link.getAttribute("href") === activeHash;
+
+        if (isActive) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+
+      select.value = activeHash;
+    };
+
+    /**
+     * Select the last heading that has crossed the sticky navigation row.
+     * At the bottom of the document the final section remains active even when
+     * its heading has moved above the viewport.
+     */
+    const updateFromScrollPosition = () => {
+      const activationLine = navigator.getBoundingClientRect().bottom + 24;
+      let activeSection = sections[0];
+
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= activationLine) {
+          activeSection = section;
+        }
+      });
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        activeSection = sections[sections.length - 1];
+      }
+
+      showActiveSection(activeSection);
+      updateRequested = false;
+    };
+
+    /** Limit repeated scroll calculations to one update per animation frame. */
+    const requestPositionUpdate = () => {
+      if (!updateRequested) {
+        updateRequested = true;
+        window.requestAnimationFrame(updateFromScrollPosition);
+      }
+    };
+
+    /*
+     * Assigning the hash provides standard browser history and link behavior.
+     * CSS scroll-padding accounts for the combined sticky-control height.
+     */
+    select.addEventListener("change", () => {
+      window.location.hash = select.value;
+      requestPositionUpdate();
+    });
+
+    window.addEventListener("scroll", requestPositionUpdate, { passive: true });
+    window.addEventListener("resize", requestPositionUpdate);
+    window.addEventListener("hashchange", requestPositionUpdate);
+    requestPositionUpdate();
+  });
+
+  if (atLeastOneNavigatorWasEnhanced) {
+    document.documentElement.classList.add("section-navigation-enhanced");
+  }
+}
+
+/**
  * Initialize each manual carousel found on the current page.
  * There is no autoplay because the outline requests a slider but does not
  * request automatic motion. Previous/next buttons and arrow keys work.
@@ -368,6 +469,7 @@ function initializeCarousels() {
 document.addEventListener("DOMContentLoaded", () => {
   initializeThemeToggle();
   initializeNavigation();
+  initializeSectionNavigation();
   initializeCarousels();
   initializeBackToTopButton();
 });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="has-section-navigation">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,14 +47,28 @@
         </div>
       </section>
 
-      <!-- In-page shortcuts reduce scrolling across the four studio areas. -->
-      <nav class="section-jump-shell" aria-label="Studio section navigation">
-        <div class="container section-jump">
-          <span class="section-jump-label">Jump to:</span>
+      <!--
+        Persistent in-page navigation:
+        - Desktop uses the complete horizontal link row.
+        - Mobile uses the compact native selection control.
+        - JavaScript keeps both versions synchronized with the visible section.
+      -->
+      <nav class="section-jump-shell" data-section-navigation aria-label="Studio section navigation">
+        <div class="container section-jump section-jump--desktop" data-section-links>
+          <span class="section-jump-label">Studio section:</span>
           <a href="#visual-master-floor">Studio Floor</a>
           <a href="#audio-suite">Audio Suite</a>
           <a href="#podcast-lounge">Podcast Lounge</a>
           <a href="#cooking-stage">Cooking Stage</a>
+        </div>
+        <div class="container section-jump-mobile">
+          <label for="studio-section-select">Studio section:</label>
+          <select id="studio-section-select" data-section-select>
+            <option value="#visual-master-floor">Studio Floor</option>
+            <option value="#audio-suite">Audio Suite</option>
+            <option value="#podcast-lounge">Podcast Lounge</option>
+            <option value="#cooking-stage">Cooking Stage</option>
+          </select>
         </div>
       </nav>
 

@@ -20,7 +20,7 @@ HTML supplies the content and structure
         |
         +---- CSS controls appearance and responsive layout
         |
-        `---- JavaScript adds the menu, theme toggle, carousel, and Top button
+        `---- JavaScript adds menus, section tracking, theme, carousel, and Top button
         |
         v
 Browser displays the finished page
@@ -66,8 +66,9 @@ JavaScript provides the interactive behavior:
 
 1. Light/dark-mode toggle
 2. Narrow-screen navigation menu with a backdrop and page-scroll lock
-3. Manual Home page carousel
-4. Reading-friendly back-to-top button
+3. Persistent section navigation on the two long comparison pages
+4. Manual Home page carousel
+5. Reading-friendly back-to-top button
 
 The site does not use React, Jekyll, a JavaScript framework, or a package manager.
 
@@ -194,7 +195,7 @@ Every non-home page begins its main content with a breadcrumb. The breadcrumb is
 Home / Studio Spaces & Gear
 ```
 
-The Studio Spaces page also has four in-page jump links. Their `href` values match section `id` values, and the visitor-facing Sitemap contains the same destinations.
+Studio Spaces & Gear and Creators & Actors have persistent in-page navigation. On desktop it is a horizontal link row. On mobile it becomes a compact native selection control. The visible section is highlighted automatically, every destination matches a section `id`, and the visitor-facing Sitemap contains the same destinations.
 
 ### The shared footer
 
@@ -233,7 +234,7 @@ The shared component rules now also include:
 - Breadcrumb appearance.
 - Mobile-menu backdrop and document scroll lock.
 - Back-to-top button states.
-- Studio section-jump links.
+- Persistent Studio and creator-service section navigation.
 - Moderately reduced page and section spacing.
 
 ### Design tokens
@@ -305,6 +306,7 @@ DOMContentLoaded
       |
       +-- initializeThemeToggle()
       +-- initializeNavigation()
+      +-- initializeSectionNavigation()
       +-- initializeCarousels()
       `-- initializeBackToTopButton()
 ```
@@ -339,6 +341,30 @@ Outside press       --> close menu and return focus to button
 Escape pressed      --> close menu and return focus to button
 Screen becomes wide --> reset menu, backdrop, and scroll lock
 ```
+
+### Persistent section-navigation feature
+
+The two long comparison pages contain ordinary anchor links and a native mobile selection control. JavaScript activates the compact mobile version only after confirming that every link, option, and destination exists. This preserves usable links if JavaScript is unavailable.
+
+```text
+Visitor scrolls through a long comparison page
+                  |
+                  v
+JavaScript finds the last section crossing the sticky row
+                  |
+                  +-- mark its desktop link aria-current="location"
+                  `-- select the matching mobile option
+
+Visitor chooses a desktop link or mobile option
+                  |
+                  v
+URL receives the matching #section-id
+                  |
+                  v
+CSS scroll padding keeps the heading below both sticky rows
+```
+
+Ordinary scrolling updates the highlighted control without rewriting the URL or adding passive movements to browser history.
 
 ### Carousel feature
 

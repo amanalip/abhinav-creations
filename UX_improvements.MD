@@ -90,6 +90,7 @@ Items 2, 3, and 4 work well as one combined mobile-menu improvement.
 ### 6. Add "Jump to section" navigation
 
 - [x] Add section shortcuts to the Studio Spaces & Gear page.
+- [x] Extend the persistent section-navigation pattern to the Creators & Actors page.
 
 Example sections:
 
@@ -402,7 +403,7 @@ The following UX/UI work is present in the current local build:
 3. **Outside-click closing (item 3):** Tapping or clicking outside the mobile menu closes it and returns focus to the menu button.
 4. **Background scroll lock (item 4):** The page cannot move behind an open mobile menu, and the visitor's position is preserved when it closes.
 5. **Reduced vertical spacing (item 5):** Hero and content-section spacing is more compact while retaining the spacious visual design.
-6. **Studio jump navigation (item 6):** The Studio page links directly to Studio Floor, Audio Suite, Podcast Lounge, and Cooking Stage. The visitor sitemap contains the same four section links and matching anchors.
+6. **Persistent section navigation (item 6):** Studio Spaces & Gear and Creators & Actors retain section navigation while visitors scroll. Desktop uses a horizontal row, mobile uses a compact current-section control, and the visitor sitemap contains all seven matching anchors.
 7. **Breadcrumbs (item 9):** Every public page except Home has a small, accessible path back to Home.
 8. **Optimized logos (item 11):** The original 1254 px source remains unchanged. A 160 px asset serves header and favicon use, while an 800 px asset serves the Home hero.
 9. **Expanded accessibility review (item 12):** Keyboard operation, focus restoration, accessible labels, light/dark contrast, narrow-screen/high-zoom reflow, 44 px mobile targets, reduced motion, and horizontal overflow were checked after implementation. A light-theme gold contrast issue and a menu scroll-lock/sticky-header conflict found during testing were corrected.
@@ -411,5 +412,54 @@ The following UX/UI work is present in the current local build:
 12. **Accessible navigation foundation:** Skip links, semantic landmarks, active-page states, visible keyboard focus, Escape-key menu closing, and a sticky header are implemented.
 13. **Level square logo presentation:** The Home hero logo is displayed as a clean 1:1 square without stretching, tilt, or an extra decorative offset border.
 14. **Manual media carousel:** Previous, next, and keyboard controls are available without autoplay; placeholders remain clearly identified until approved media is supplied.
-15. **Visitor sitemap:** Every public page is listed, including the four current Studio section anchors.
+15. **Visitor sitemap:** Every public page is listed, including four Studio anchors and three creator-service anchors.
 16. **Public copy cleanup:** Em dashes were replaced with standard hyphens throughout the visitor-facing HTML.
+
+## Learnings
+
+### In-page navigation must remain available on long pages
+
+The first Studio jump navigation solved the initial problem of reaching a distant section quickly, but it introduced a second problem: after a visitor selects a section such as Podcast Lounge, the navigation itself remains near the top of the page and scrolls out of reach. The visitor must then scroll back up before choosing another Studio section.
+
+The implemented improvement is:
+
+- On mobile, replace each wide shortcut row with a compact, one-line sticky section control below the main header. It displays the currently viewed section and opens that page's section list.
+- On desktop, retain the horizontal section links but make their row sticky below the main header.
+- Highlight the section currently visible on screen so the navigation also communicates the visitor's location.
+- Keep all four Studio destinations and all three creator-service destinations identical to the anchors recorded in the visitor sitemap.
+- Account for the combined height of the main header and section navigator when scrolling to an anchor. The selected heading must remain visible and should not be separated from the controls by an unnecessarily large blank area.
+- Keep the control compact, keyboard operable, screen-reader labelled, and at least 44 pixels high on touch screens.
+- Ensure the section navigator does not cover reading content and does not compete with the mobile menu or back-to-top control.
+
+Suggested behavior:
+
+```text
+Visitor opens Studio Spaces & Gear
+                |
+                v
+Desktop: horizontal section row
+Mobile: compact current-section control
+                |
+Visitor selects Podcast Lounge
+                |
+                v
+Podcast Lounge heading remains visible
+Navigator remains available below the header
+Current section changes to Podcast Lounge
+                |
+Visitor can immediately choose another section
+```
+
+### Apply persistent navigation selectively
+
+Persistent section navigation is valuable when a page has several long, clearly named sections and visitors are likely to compare them. Adding it everywhere would consume mobile screen space and create unnecessary controls.
+
+Current page assessment:
+
+1. **Studio Spaces & Gear:** Persistent navigation is implemented for its four long, comparable sections.
+2. **Creators & Actors:** Persistent navigation is implemented for its three distinct service sections.
+3. **Brands & Businesses and Pricing & Live Booking:** Do not add it now. Each currently has only two primary sections and remains reasonably easy to scan.
+4. **Home:** Do not add it. Home is a guided landing-page journey, and persistent section controls would compete with its primary calls to action.
+5. **Contact, legal pages, Sitemap, and 404:** Do not add it. These pages are short or already function as navigation destinations.
+
+The broader lesson is that a shortcut should be tested from the visitor's destination, not only from its starting position. A control that successfully moves the visitor somewhere must also leave them with an obvious and convenient next action.

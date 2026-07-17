@@ -42,6 +42,7 @@
   --radius-large: 1.8rem;
   --content-width: 74rem;
   --header-height: 5rem;
+  --section-navigation-height: 4.1rem;
   --transition: 180ms ease;
 }
 
@@ -103,6 +104,15 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 2rem);
+}
+
+/*
+ * The two long comparison pages have a second sticky navigation row.
+ * Include both sticky controls in anchor positioning so a selected heading
+ * is visible instead of being hidden underneath them.
+ */
+html.has-section-navigation {
+  scroll-padding-top: calc(var(--header-height) + var(--section-navigation-height) + 0.75rem);
 }
 
 /*
@@ -651,17 +661,27 @@ ul:last-child {
 }
 
 /*
- * Studio-section shortcuts remain a single row. On a narrow screen the row
- * scrolls sideways instead of wrapping into a tall block above the content.
+ * PERSISTENT IN-PAGE NAVIGATION
+ * ------------------------------------------------------------
+ * This shared component is used only on the two long comparison pages:
+ * Studio Spaces & Gear and Creators & Actors. It remains directly below
+ * the sticky site header so a visitor never has to return to the beginning
+ * of the page merely to choose another section.
  */
 .section-jump-shell {
+  position: sticky;
+  z-index: 80;
+  top: var(--header-height);
   border-bottom: 1px solid var(--color-line);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  box-shadow: 0 8px 18px rgb(38 32 19 / 6%);
+  backdrop-filter: blur(18px);
 }
 
 .section-jump {
   display: flex;
-  padding-block: 1rem;
+  min-height: var(--section-navigation-height);
+  padding-block: 0.65rem;
   align-items: center;
   gap: 0.65rem;
   overflow-x: auto;
@@ -693,6 +713,45 @@ ul:last-child {
 .section-jump a:hover {
   border-color: var(--color-gold);
   color: var(--color-gold);
+}
+
+/* The visible page section is communicated with color and aria-current. */
+.section-jump a[aria-current="location"] {
+  border-color: var(--color-gold);
+  background: var(--color-gold-soft);
+  color: var(--color-text);
+}
+
+/*
+ * The mobile control is hidden by default. JavaScript reveals it only after
+ * enhancement succeeds; without JavaScript, the ordinary links remain usable.
+ */
+.section-jump-mobile {
+  display: none;
+  min-height: var(--section-navigation-height);
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.section-jump-mobile label {
+  flex: 0 0 auto;
+  color: var(--color-text-soft);
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.section-jump-mobile select {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.55rem 2.2rem 0.55rem 0.75rem;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-small);
+  background-color: var(--color-page);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 /* ============================================================
@@ -1031,6 +1090,19 @@ ul:last-child {
 @media (max-width: 42rem) {
   :root {
     --header-height: 4.4rem;
+    --section-navigation-height: 3.75rem;
+  }
+
+  /*
+   * Once JavaScript confirms that the selection control is operational,
+   * replace the wide link row with the compact single-line mobile version.
+   */
+  .section-navigation-enhanced .section-jump--desktop {
+    display: none;
+  }
+
+  .section-navigation-enhanced .section-jump-mobile {
+    display: flex;
   }
 
   .brand img {
