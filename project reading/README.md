@@ -38,6 +38,16 @@ Start
   +--> 12 Maintenance and troubleshooting
   +--> 13 Content and launch governance
   +--> 14 Security, privacy, limitations
+  +--> 15 Setting up Playwright
+  +--> 16 Codex + Playwright architecture
+  +--> 17 Generative AI and Codex
+  +--> 18 Project design patterns
+  +--> 19 Codex across operating systems
+  +--> 20 Web and browser fundamentals
+  +--> 21 Git and GitHub
+  +--> 22 Browser DevTools
+  +--> 23 CI/CD and quality checks
+  +--> 24 Performance, SEO, discoverability
   +--> AGENTS template
 ~~~
 
@@ -59,7 +69,48 @@ Start
 | Maintain or repair the website | [12 - Maintenance and troubleshooting](12-maintenance-and-troubleshooting.md) |
 | Control business content and launch approval | [13 - Content and launch governance](13-content-and-launch-governance.md) |
 | Understand security, privacy, and architectural limits | [14 - Security, privacy, and limitations](14-security-privacy-and-limitations.md) |
+| Add a real Playwright suite in the future | [15 - Setting up Playwright](15-setting-up-playwright.md) |
+| Prepare for a Codex/browser system-design discussion | [16 - Codex and Playwright architecture](16-codex-and-playwright-testing-architecture.md) |
+| Learn generative AI, context, models, and Codex | [17 - Generative AI and Codex basics](17-generative-ai-and-openai-codex-basics.md) |
+| Understand patterns in the code | [18 - Design patterns](18-design-patterns-used-in-this-project.md) |
+| Compare Codex across operating systems | [19 - Codex on Linux, macOS, and Windows](19-codex-on-linux-macos-and-windows.md) |
+| Learn how the Web and browsers work | [20 - Web and browser fundamentals](20-web-and-browser-fundamentals.md) |
+| Learn safe version control | [21 - Git and GitHub](21-git-and-github-for-beginners.md) |
+| Debug a page manually | [22 - Browser DevTools](22-browser-developer-tools-and-debugging.md) |
+| Understand automated checks and delivery | [23 - CI/CD and quality checks](23-ci-cd-and-automated-quality-checks.md) |
+| Prepare performance and search discovery | [24 - Performance, SEO, and discoverability](24-performance-seo-and-discoverability.md) |
 | Create repository instructions for an AI agent | [AGENTS template](AGENTS-template.md) |
+
+## Suggested learning paths
+
+### Website beginner
+
+~~~text
+01 Glossary -> 20 Web fundamentals -> 02 System design
+ -> 03 Implementation -> 05 UX/accessibility -> 21 Git
+~~~
+
+### Testing beginner
+
+~~~text
+20 Browser fundamentals -> 22 DevTools -> 06 Browser QA
+ -> 15 Playwright setup -> 23 CI/CD
+~~~
+
+### Codex beginner
+
+~~~text
+17 Generative AI/Codex -> 07 Best practices
+ -> 08 Agentic development -> 09 Skills -> AGENTS template
+~~~
+
+### System-design interview preparation
+
+~~~text
+02 Website architecture -> 18 Design patterns
+ -> 16 Codex/Playwright architecture -> 19 Platforms
+ -> 23 CI/CD -> 14 Security boundaries
+~~~
 
 ## Current project truth in one minute
 
@@ -92,8 +143,7 @@ When the website changes:
 
 ## Sanity check
 
-- [x] All 16 files in the agreed handbook set are listed here.
+- [x] All 25 companion documents are linked from this README; together with this README, the expanded handbook contains 26 Markdown files.
 - [x] Every link uses a relative path suitable for GitHub.
 - [x] Implemented, pending, and suggested features are separated.
 - [x] GitHub Pages, Playwright, and architecture claims match the repository as reviewed on 17 July 2026.
-
