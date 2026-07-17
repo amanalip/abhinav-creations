@@ -804,6 +804,15 @@ ul:last-child {
    breakpoints are content-based, not tied to one phone model.
    ============================================================ */
 @media (max-width: 68rem) {
+  /*
+   * Once the desktop navigation collapses, push the theme and menu
+   * controls to the far-right edge of the header. The brand remains
+   * anchored on the left, creating the familiar mobile header layout.
+   */
+  .header-actions {
+    margin-left: auto;
+  }
+
   .site-nav {
     position: absolute;
     top: calc(100% + 1px);

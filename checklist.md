@@ -29,6 +29,7 @@
 - [x] Flexible containers and typography.
 - [x] Responsive Grid/Flexbox layouts.
 - [x] Collapsible narrow-screen navigation.
+- [x] Mobile theme and menu controls align together at the far-right edge of the header.
 - [x] Cards and columns stack when space is limited.
 - [x] Logo and media use responsive sizing.
 - [x] Home hero logo is a clean, level 1:1 square without stretching or a decorative offset border.
