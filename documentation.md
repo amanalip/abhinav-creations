@@ -195,7 +195,7 @@ Every non-home page begins its main content with a breadcrumb. The breadcrumb is
 Home / Studio Spaces & Gear
 ```
 
-Studio Spaces & Gear and Creators & Actors have persistent in-page navigation. On desktop it is a horizontal link row. On mobile it becomes a compact native selection control. The visible section is highlighted automatically, every destination matches a section `id`, and the visitor-facing Sitemap contains the same destinations.
+Studio Spaces & Gear and Creators & Actors have persistent in-page navigation. Desktop and mobile both use ordinary anchor buttons; on a narrow screen the button row can be swiped sideways. The visible section is highlighted automatically, every destination matches a section `id`, and the visitor-facing Sitemap contains the same destinations.
 
 ### The shared footer
 
@@ -344,7 +344,7 @@ Screen becomes wide --> reset menu, backdrop, and scroll lock
 
 ### Persistent section-navigation feature
 
-The two long comparison pages contain ordinary anchor links and a native mobile selection control. JavaScript activates the compact mobile version only after confirming that every link, option, and destination exists. This preserves usable links if JavaScript is unavailable.
+The two long comparison pages contain ordinary anchor buttons at every screen size. On mobile the row scrolls horizontally when all destinations do not fit. This is deliberately simpler and more reliable than a native selection menu: the visitor can tap any destination directly, and tapping the currently selected destination still performs the navigation. If JavaScript is unavailable, the buttons remain normal usable links.
 
 ```text
 Visitor scrolls through a long comparison page
@@ -352,19 +352,21 @@ Visitor scrolls through a long comparison page
                   v
 JavaScript finds the last section crossing the sticky row
                   |
-                  +-- mark its desktop link aria-current="location"
-                  `-- select the matching mobile option
+                  `-- mark its button aria-current="location"
 
-Visitor chooses a desktop link or mobile option
+Visitor taps or clicks a section button
                   |
                   v
-URL receives the matching #section-id
+JavaScript holds that button as current while scrolling
+                  |
+                  v
+URL receives the matching #section-id and the section scrolls into place
                   |
                   v
 CSS scroll padding keeps the heading below both sticky rows
 ```
 
-Ordinary scrolling updates the highlighted control without rewriting the URL or adding passive movements to browser history.
+Ordinary scrolling updates the highlighted button without rewriting the URL or adding passive movements to browser history. During a button-triggered smooth scroll, temporary destination locking prevents intermediate sections from taking over the highlighted state. Repeated taps work even when the same hash is already present in the address bar.
 
 ### Carousel feature
 

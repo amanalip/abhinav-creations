@@ -49,34 +49,25 @@
 
       <!--
         Persistent in-page navigation:
-        - Desktop uses the complete horizontal link row.
-        - Mobile uses the compact native selection control.
-        - JavaScript keeps both versions synchronized with the visible section.
+        - Every screen size uses ordinary anchor buttons.
+        - The row scrolls sideways on narrow screens instead of opening a select.
+        - JavaScript highlights the button for the visible section.
       -->
       <nav class="section-jump-shell" data-section-navigation aria-label="Studio section navigation">
-        <div class="container section-jump section-jump--desktop" data-section-links>
+        <div class="container section-jump" data-section-links>
           <span class="section-jump-label">Studio section:</span>
           <a href="#visual-master-floor">Studio Floor</a>
           <a href="#audio-suite">Audio Suite</a>
           <a href="#podcast-lounge">Podcast Lounge</a>
           <a href="#cooking-stage">Cooking Stage</a>
         </div>
-        <div class="container section-jump-mobile">
-          <label for="studio-section-select">Studio section:</label>
-          <select id="studio-section-select" data-section-select>
-            <option value="#visual-master-floor">Studio Floor</option>
-            <option value="#audio-suite">Audio Suite</option>
-            <option value="#podcast-lounge">Podcast Lounge</option>
-            <option value="#cooking-stage">Cooking Stage</option>
-          </select>
-        </div>
       </nav>
 
-      <!-- 2.1 Visual Master Floor -->
+      <!-- Visual Master Floor -->
       <section class="section" id="visual-master-floor" aria-labelledby="visual-floor-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
-            <span class="eyebrow">2.1 · Visual Master Floor</span>
+            <span class="eyebrow">Visual Master Floor</span>
             <h2 id="visual-floor-heading">The Modular Studio Floor &amp; Cyclorama.</h2>
           </div>
           <article class="card">
@@ -86,11 +77,11 @@
         </div>
       </section>
 
-      <!-- 2.2 Acoustic Audio Hub -->
+      <!-- Acoustic Audio Hub -->
       <section class="section section--surface" id="audio-suite" aria-labelledby="audio-hub-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
-            <span class="eyebrow">2.2 · Acoustic Audio Hub</span>
+            <span class="eyebrow">Acoustic Audio Hub</span>
             <h2 id="audio-hub-heading">The Voice Isolation &amp; Dubbing Suite.</h2>
           </div>
           <article class="card">
@@ -100,11 +91,11 @@
         </div>
       </section>
 
-      <!-- 2.3 Podcast Lounge -->
+      <!-- Podcast Lounge -->
       <section class="section" id="podcast-lounge" aria-labelledby="podcast-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
-            <span class="eyebrow">2.3 · Podcast Lounge</span>
+            <span class="eyebrow">Podcast Lounge</span>
             <h2 id="podcast-heading">The Multi-Cam Broadcast Lounge.</h2>
           </div>
           <article class="card">
@@ -114,11 +105,11 @@
         </div>
       </section>
 
-      <!-- 2.4 Commercial Kitchen Setup -->
+      <!-- Commercial Kitchen Setup -->
       <section class="section section--surface" id="cooking-stage" aria-labelledby="kitchen-heading">
         <div class="container grid grid--2">
           <div class="section-heading">
-            <span class="eyebrow">2.4 · Commercial Kitchen Setup</span>
+            <span class="eyebrow">Commercial Kitchen Setup</span>
             <h2 id="kitchen-heading">The Mobile SME Food &amp; Cooking Stage.</h2>
           </div>
           <article class="card">

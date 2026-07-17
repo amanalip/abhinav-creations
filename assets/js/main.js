@@ -318,37 +318,39 @@ function initializeBackToTopButton() {
  * Keep persistent in-page navigation synchronized with the section currently
  * visible on screen.
  *
- * Each enhanced page contains ordinary anchor links plus a native select:
- * - desktop visitors see the anchor links;
- * - mobile visitors see the compact select;
- * - without JavaScript, the ordinary links remain available at every width.
+ * Each enhanced page uses the same ordinary anchor buttons at every width.
+ * On a phone the row can be swiped sideways, so there is no native selection
+ * menu whose value can be changed while the menu is open.
  *
- * The function updates aria-current on the desktop links and the selected
- * mobile option. It deliberately does not rewrite the URL during ordinary
- * scrolling, which avoids filling browser history with passive scroll events.
+ * The function updates aria-current on the matching link. It deliberately
+ * does not rewrite the URL during ordinary scrolling, which avoids filling
+ * browser history with passive scroll events.
  */
 function initializeSectionNavigation() {
   const navigators = document.querySelectorAll("[data-section-navigation]");
-  let atLeastOneNavigatorWasEnhanced = false;
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   navigators.forEach((navigator) => {
+    const linkRow = navigator.querySelector("[data-section-links]");
     const links = Array.from(navigator.querySelectorAll("[data-section-links] a[href^='#']"));
-    const select = navigator.querySelector("[data-section-select]");
     const sections = links
       .map((link) => document.querySelector(link.getAttribute("href")))
       .filter(Boolean);
 
-    /* Do not replace the fallback links unless every required part exists. */
-    if (!select || links.length === 0 || sections.length !== links.length) {
+    /* Leave the ordinary links untouched when a destination is missing. */
+    if (!linkRow || links.length === 0 || sections.length !== links.length) {
       return;
     }
 
-    atLeastOneNavigatorWasEnhanced = true;
     let updateRequested = false;
+    let requestedSection = null;
+    let navigationSettleTimer = null;
+    let activeSectionId = "";
 
-    /** Synchronize both controls without causing navigation or focus changes. */
+    /** Highlight one destination and keep it visible in a narrow link row. */
     const showActiveSection = (activeSection) => {
       const activeHash = `#${activeSection.id}`;
+      const activeLink = links.find((link) => link.getAttribute("href") === activeHash);
 
       links.forEach((link) => {
         const isActive = link.getAttribute("href") === activeHash;
@@ -360,7 +362,31 @@ function initializeSectionNavigation() {
         }
       });
 
-      select.value = activeHash;
+      /* Avoid repeatedly moving the horizontal row during the same section. */
+      if (activeLink && activeSectionId !== activeSection.id) {
+        const centeredLeft = activeLink.offsetLeft
+          + (activeLink.offsetWidth / 2)
+          - (linkRow.clientWidth / 2);
+
+        linkRow.scrollTo({
+          left: Math.max(0, centeredLeft),
+          behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+        });
+      }
+
+      activeSectionId = activeSection.id;
+    };
+
+    /**
+     * Stop holding a tapped destination after programmatic scrolling settles.
+     * Scroll events restart this short timer, including during smooth scrolling.
+     */
+    const scheduleNavigationRelease = () => {
+      window.clearTimeout(navigationSettleTimer);
+      navigationSettleTimer = window.setTimeout(() => {
+        requestedSection = null;
+        requestPositionUpdate();
+      }, 180);
     };
 
     /**
@@ -369,6 +395,16 @@ function initializeSectionNavigation() {
      * its heading has moved above the viewport.
      */
     const updateFromScrollPosition = () => {
+      /*
+       * While a tapped destination is moving into place, do not let sections
+       * passed along the way steal the highlighted state from that button.
+       */
+      if (requestedSection) {
+        showActiveSection(requestedSection);
+        updateRequested = false;
+        return;
+      }
+
       const activationLine = navigator.getBoundingClientRect().bottom + 24;
       let activeSection = sections[0];
 
@@ -395,23 +431,46 @@ function initializeSectionNavigation() {
     };
 
     /*
-     * Assigning the hash provides standard browser history and link behavior.
-     * CSS scroll-padding accounts for the combined sticky-control height.
+     * Explicitly scroll every tapped link, even when its hash is already in
+     * the address bar. This makes repeated taps reliable. Holding the requested
+     * section prevents the tracker from changing the highlight mid-journey.
      */
-    select.addEventListener("change", () => {
-      window.location.hash = select.value;
-      requestPositionUpdate();
+    links.forEach((link, index) => {
+      link.addEventListener("click", (event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+
+        event.preventDefault();
+        const targetSection = sections[index];
+        const targetHash = link.getAttribute("href");
+
+        requestedSection = targetSection;
+        showActiveSection(targetSection);
+
+        if (window.location.hash !== targetHash) {
+          window.history.pushState(null, "", targetHash);
+        }
+
+        targetSection.scrollIntoView({
+          behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+          block: "start",
+        });
+        scheduleNavigationRelease();
+      });
     });
 
-    window.addEventListener("scroll", requestPositionUpdate, { passive: true });
+    window.addEventListener("scroll", () => {
+      if (requestedSection) {
+        scheduleNavigationRelease();
+      }
+
+      requestPositionUpdate();
+    }, { passive: true });
     window.addEventListener("resize", requestPositionUpdate);
     window.addEventListener("hashchange", requestPositionUpdate);
     requestPositionUpdate();
   });
-
-  if (atLeastOneNavigatorWasEnhanced) {
-    document.documentElement.classList.add("section-navigation-enhanced");
-  }
 }
 
 /**

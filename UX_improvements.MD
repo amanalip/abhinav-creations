@@ -403,7 +403,7 @@ The following UX/UI work is present in the current local build:
 3. **Outside-click closing (item 3):** Tapping or clicking outside the mobile menu closes it and returns focus to the menu button.
 4. **Background scroll lock (item 4):** The page cannot move behind an open mobile menu, and the visitor's position is preserved when it closes.
 5. **Reduced vertical spacing (item 5):** Hero and content-section spacing is more compact while retaining the spacious visual design.
-6. **Persistent section navigation (item 6):** Studio Spaces & Gear and Creators & Actors retain section navigation while visitors scroll. Desktop uses a horizontal row, mobile uses a compact current-section control, and the visitor sitemap contains all seven matching anchors.
+6. **Persistent section navigation (item 6):** Studio Spaces & Gear and Creators & Actors retain section navigation while visitors scroll. Desktop and mobile use dependable anchor buttons, the mobile row can be swiped sideways, and the visitor sitemap contains all seven matching anchors.
 7. **Breadcrumbs (item 9):** Every public page except Home has a small, accessible path back to Home.
 8. **Optimized logos (item 11):** The original 1254 px source remains unchanged. A 160 px asset serves header and favicon use, while an 800 px asset serves the Home hero.
 9. **Expanded accessibility review (item 12):** Keyboard operation, focus restoration, accessible labels, light/dark contrast, narrow-screen/high-zoom reflow, 44 px mobile targets, reduced motion, and horizontal overflow were checked after implementation. A light-theme gold contrast issue and a menu scroll-lock/sticky-header conflict found during testing were corrected.
@@ -423,7 +423,7 @@ The first Studio jump navigation solved the initial problem of reaching a distan
 
 The implemented improvement is:
 
-- On mobile, replace each wide shortcut row with a compact, one-line sticky section control below the main header. It displays the currently viewed section and opens that page's section list.
+- On mobile, use a compact, one-line sticky row of ordinary section buttons below the main header. The row can be swiped sideways when its buttons do not fit.
 - On desktop, retain the horizontal section links but make their row sticky below the main header.
 - Highlight the section currently visible on screen so the navigation also communicates the visitor's location.
 - Keep all four Studio destinations and all three creator-service destinations identical to the anchors recorded in the visitor sitemap.
@@ -438,7 +438,7 @@ Visitor opens Studio Spaces & Gear
                 |
                 v
 Desktop: horizontal section row
-Mobile: compact current-section control
+Mobile: horizontally swipeable section buttons
                 |
 Visitor selects Podcast Lounge
                 |
@@ -463,3 +463,17 @@ Current page assessment:
 5. **Contact, legal pages, Sitemap, and 404:** Do not add it. These pages are short or already function as navigation destinations.
 
 The broader lesson is that a shortcut should be tested from the visitor's destination, not only from its starting position. A control that successfully moves the visitor somewhere must also leave them with an obvious and convenient next action.
+
+### Native selection menus can conflict with live section tracking
+
+The first mobile version used a native selection menu. Testing on an Android browser revealed three reliability problems:
+
+- Scroll tracking could change the selected menu item while the browser's native menu was open.
+- Intermediate sections could briefly take over the selected state during smooth scrolling.
+- Choosing an option that was already selected did not reliably create another navigation event.
+
+The implemented correction replaces that menu with ordinary anchor buttons. Every tap is handled explicitly, including a repeated tap on the current destination. While a button-triggered scroll is in progress, JavaScript temporarily keeps that requested button active; normal position tracking resumes after scrolling settles. This produces the same predictable interaction on mobile and desktop while preserving functional links when JavaScript is unavailable.
+
+### Visible outline numbering is not always useful website copy
+
+Decimal prefixes such as `2.1`, `3.2`, and `4.1` originated as document-outline references. On the finished interface they looked like internal document numbering rather than helpful navigation. They have been removed from visitor-facing section labels across the website. Circular card identifiers such as `01`, `02`, and `03` remain because they are a separate visual device for distinguishing related cards.

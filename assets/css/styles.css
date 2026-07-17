@@ -684,6 +684,7 @@ ul:last-child {
   padding-block: 0.65rem;
   align-items: center;
   gap: 0.65rem;
+  overscroll-behavior-inline: contain;
   overflow-x: auto;
   scrollbar-width: thin;
 }
@@ -720,38 +721,6 @@ ul:last-child {
   border-color: var(--color-gold);
   background: var(--color-gold-soft);
   color: var(--color-text);
-}
-
-/*
- * The mobile control is hidden by default. JavaScript reveals it only after
- * enhancement succeeds; without JavaScript, the ordinary links remain usable.
- */
-.section-jump-mobile {
-  display: none;
-  min-height: var(--section-navigation-height);
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.section-jump-mobile label {
-  flex: 0 0 auto;
-  color: var(--color-text-soft);
-  font-size: 0.75rem;
-  font-weight: 850;
-}
-
-.section-jump-mobile select {
-  width: 100%;
-  min-width: 0;
-  min-height: 2.75rem;
-  padding: 0.55rem 2.2rem 0.55rem 0.75rem;
-  border: 1px solid var(--color-gold);
-  border-radius: var(--radius-small);
-  background-color: var(--color-page);
-  color: var(--color-text);
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 800;
 }
 
 /* ============================================================
@@ -1094,15 +1063,27 @@ ul:last-child {
   }
 
   /*
-   * Once JavaScript confirms that the selection control is operational,
-   * replace the wide link row with the compact single-line mobile version.
+   * Keep the same dependable anchor buttons on phones. The label is visually
+   * unnecessary because the navigation itself has an accessible name, so
+   * hiding it leaves more room for the destinations. The row can be swiped
+   * sideways when all buttons do not fit at once.
    */
-  .section-navigation-enhanced .section-jump--desktop {
+  .section-jump {
+    gap: 0.45rem;
+    scrollbar-width: none;
+  }
+
+  .section-jump::-webkit-scrollbar {
     display: none;
   }
 
-  .section-navigation-enhanced .section-jump-mobile {
-    display: flex;
+  .section-jump-label {
+    display: none;
+  }
+
+  .section-jump a {
+    min-height: 2.75rem;
+    padding-inline: 0.8rem;
   }
 
   .brand img {
