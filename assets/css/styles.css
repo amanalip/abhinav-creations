@@ -1,0 +1,925 @@
+/*
+ * ABHINAV CREATIONS — SHARED WEBSITE STYLES
+ * ------------------------------------------------------------
+ * This single stylesheet controls every page in the website.
+ * It is divided into labelled sections so a beginner can find:
+ *   1. theme colors,
+ *   2. basic browser resets,
+ *   3. shared layout helpers,
+ *   4. header/navigation styles,
+ *   5. page components,
+ *   6. responsive rules, and
+ *   7. accessibility preferences.
+ *
+ * There is no CSS framework. Every class used by the HTML pages
+ * is defined here using standard CSS supported by modern browsers.
+ */
+
+/* ============================================================
+   1. LIGHT THEME DESIGN TOKENS
+   Design tokens are reusable values. Changing a token updates
+   every component that uses it, which keeps the design consistent.
+   ============================================================ */
+:root {
+  color-scheme: light;
+  --color-page: #f6f3ec;
+  --color-surface: #fffdf8;
+  --color-surface-strong: #ffffff;
+  --color-text: #191815;
+  --color-text-soft: #68645b;
+  --color-line: #ded8ca;
+  --color-gold: #a87816;
+  --color-gold-bright: #d3a43e;
+  --color-gold-soft: #f1e4c3;
+  --color-black: #11110f;
+  --color-notice: #fff4cf;
+  --color-notice-text: #5c4308;
+  --shadow-soft: 0 18px 50px rgb(38 32 19 / 10%);
+  --shadow-card: 0 8px 24px rgb(38 32 19 / 8%);
+  --radius-small: 0.65rem;
+  --radius-medium: 1.15rem;
+  --radius-large: 1.8rem;
+  --content-width: 74rem;
+  --header-height: 5rem;
+  --transition: 180ms ease;
+}
+
+/* ============================================================
+   2. DARK THEME DESIGN TOKENS
+   The data-theme attribute is set by JavaScript when a visitor
+   explicitly chooses a theme. Without an explicit choice, the
+   media query below follows the device/browser preference.
+   ============================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-page: #11110f;
+  --color-surface: #191916;
+  --color-surface-strong: #22221e;
+  --color-text: #f4efe4;
+  --color-text-soft: #bbb4a6;
+  --color-line: #3b382f;
+  --color-gold: #d3a43e;
+  --color-gold-bright: #efc765;
+  --color-gold-soft: #3c3015;
+  --color-black: #090908;
+  --color-notice: #302710;
+  --color-notice-text: #f4d887;
+  --shadow-soft: 0 18px 50px rgb(0 0 0 / 28%);
+  --shadow-card: 0 8px 24px rgb(0 0 0 / 22%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --color-page: #11110f;
+    --color-surface: #191916;
+    --color-surface-strong: #22221e;
+    --color-text: #f4efe4;
+    --color-text-soft: #bbb4a6;
+    --color-line: #3b382f;
+    --color-gold: #d3a43e;
+    --color-gold-bright: #efc765;
+    --color-gold-soft: #3c3015;
+    --color-black: #090908;
+    --color-notice: #302710;
+    --color-notice-text: #f4d887;
+    --shadow-soft: 0 18px 50px rgb(0 0 0 / 28%);
+    --shadow-card: 0 8px 24px rgb(0 0 0 / 22%);
+  }
+}
+
+/* ============================================================
+   3. BASIC RESET AND DOCUMENT DEFAULTS
+   These rules remove inconsistent browser defaults and establish
+   predictable typography, spacing, and box sizing.
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 2rem);
+}
+
+body {
+  margin: 0;
+  min-width: 18rem;
+  background:
+    radial-gradient(circle at 85% 0%, rgb(211 164 62 / 10%), transparent 25rem),
+    var(--color-page);
+  color: var(--color-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  /*
+   * Keep media at its natural proportions when its width becomes responsive.
+   * This also overrides fixed HTML height hints that could otherwise stretch
+   * an image after CSS changes its displayed width.
+   */
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 0.2rem solid var(--color-gold-bright);
+  outline-offset: 0.22rem;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: #fff;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  max-width: 16ch;
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.65rem, 7vw, 5.9rem);
+}
+
+h2 {
+  margin-bottom: 1.1rem;
+  font-size: clamp(2rem, 4vw, 3.55rem);
+}
+
+h3 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+}
+
+p:last-child,
+ul:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   4. ACCESSIBILITY AND SHARED LAYOUT HELPERS
+   ============================================================ */
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  transform: translateY(-160%);
+  border-radius: var(--radius-small);
+  background: var(--color-text);
+  color: var(--color-page);
+  font-weight: 800;
+  transition: transform var(--transition);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.container {
+  width: min(calc(100% - 2rem), var(--content-width));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+.section--tight {
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.section--surface {
+  border-block: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.section-heading {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 5vw, 3.8rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  color: var(--color-gold);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  width: 2.2rem;
+  height: 0.12rem;
+  background: currentcolor;
+  content: "";
+}
+
+.lead {
+  max-width: 48rem;
+  color: var(--color-text-soft);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+.text-link {
+  color: var(--color-gold);
+  font-weight: 800;
+}
+
+.muted {
+  color: var(--color-text-soft);
+}
+
+.pending-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 99rem;
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pending-label::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: currentcolor;
+  content: "";
+}
+
+/* ============================================================
+   5. PRE-LAUNCH NOTICE
+   The notice prevents the local preview from looking like a live,
+   transaction-ready business website before facts and policies are
+   approved.
+   ============================================================ */
+.development-notice {
+  padding: 0.55rem 1rem;
+  background: var(--color-notice);
+  color: var(--color-notice-text);
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+/* ============================================================
+   6. STICKY HEADER, NAVIGATION, AND THEME CONTROL
+   ============================================================ */
+.site-header {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-page) 90%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.header-inner {
+  display: flex;
+  min-height: var(--header-height);
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand img {
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.7rem;
+  background: #fff;
+  object-fit: cover;
+}
+
+.brand-name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.brand-name small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--color-gold);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.site-nav {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.site-nav a {
+  padding: 0.7rem 0.65rem;
+  border-radius: 0.55rem;
+  color: var(--color-text-soft);
+  font-size: 0.79rem;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  background: var(--color-gold-soft);
+  color: var(--color-text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.icon-button,
+.menu-toggle {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.icon-button:hover,
+.menu-toggle:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-0.1rem);
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.theme-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* ============================================================
+   7. BUTTONS
+   ============================================================ */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.78rem 1.15rem;
+  border: 1px solid var(--color-gold);
+  border-radius: 99rem;
+  background: var(--color-gold);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.button:hover {
+  background: var(--color-gold-bright);
+  color: #18150d;
+  transform: translateY(-0.12rem);
+}
+
+.button--secondary {
+  background: transparent;
+  color: var(--color-text);
+}
+
+.button--compact {
+  min-height: 2.7rem;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.78rem;
+}
+
+.button[aria-disabled="true"],
+.button:disabled {
+  border-color: var(--color-line);
+  background: var(--color-line);
+  color: var(--color-text-soft);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   8. HERO AND PAGE INTRODUCTIONS
+   ============================================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(4.5rem, 9vw, 8.5rem);
+}
+
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  width: 38rem;
+  height: 38rem;
+  border: 1px solid rgb(168 120 22 / 28%);
+  border-radius: 50%;
+  content: "";
+  inset: -13rem -13rem auto auto;
+  box-shadow: inset 0 0 0 5rem rgb(168 120 22 / 4%), inset 0 0 0 10rem rgb(168 120 22 / 3%);
+}
+
+.hero-grid {
+  display: grid;
+  align-items: center;
+  gap: clamp(2.5rem, 7vw, 6rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(17rem, 0.8fr);
+}
+
+.hero-copy .lead {
+  margin-bottom: 2rem;
+}
+
+.hero-brand-card {
+  position: relative;
+  display: grid;
+  aspect-ratio: 1 / 1;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-large);
+  background: linear-gradient(145deg, #fff, #f3ead6);
+  box-shadow: var(--shadow-soft);
+  place-items: center;
+}
+
+.hero-brand-card img {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-large) - 0.5rem);
+  object-fit: contain;
+}
+
+.page-hero {
+  padding-block: clamp(4rem, 8vw, 7rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.page-hero .lead {
+  margin-bottom: 1.8rem;
+}
+
+/* ============================================================
+   9. CARDS, GRIDS, AND SERVICE CONTENT
+   ============================================================ */
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.card {
+  position: relative;
+  min-width: 0;
+  padding: clamp(1.3rem, 3vw, 2rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card-number {
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-bottom: 2rem;
+  place-items: center;
+  border: 1px solid var(--color-gold);
+  border-radius: 50%;
+  color: var(--color-gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+}
+
+.card p {
+  color: var(--color-text-soft);
+}
+
+.path-card {
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.path-card::after {
+  position: absolute;
+  width: 9rem;
+  height: 9rem;
+  border: 2.5rem solid var(--color-gold-soft);
+  border-radius: 50%;
+  content: "";
+  inset: auto -3rem -3rem auto;
+}
+
+.path-card:hover {
+  border-color: var(--color-gold);
+  transform: translateY(-0.25rem);
+}
+
+.path-card .path-arrow {
+  color: var(--color-gold);
+  font-size: 1.6rem;
+}
+
+.feature-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 0.85rem;
+  list-style: none;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.feature-list li::before {
+  position: absolute;
+  top: 0.65em;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-gold);
+  content: "";
+}
+
+.callout {
+  display: grid;
+  padding: clamp(1.5rem, 4vw, 2.6rem);
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-medium);
+  background: linear-gradient(135deg, var(--color-gold-soft), var(--color-surface));
+  gap: 1rem;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.callout h2,
+.callout p {
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   10. MANUAL VIDEO CAROUSEL PLACEHOLDERS
+   Media is intentionally not fabricated. The carousel proves the
+   interaction and layout while waiting for approved real videos.
+   ============================================================ */
+.carousel {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+}
+
+.carousel-slide {
+  display: none;
+  min-height: 24rem;
+  padding: clamp(2rem, 7vw, 5rem);
+  place-content: center;
+  background:
+    linear-gradient(135deg, rgb(0 0 0 / 78%), rgb(36 27 9 / 82%)),
+    repeating-linear-gradient(45deg, #a87816 0 1rem, #11110f 1rem 2rem);
+  color: #fff;
+  text-align: center;
+}
+
+.carousel-slide.is-active {
+  display: grid;
+}
+
+.carousel-slide h3 {
+  max-width: 24ch;
+  margin-inline: auto;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+}
+
+.carousel-slide p {
+  max-width: 38rem;
+  margin-inline: auto;
+  color: #ded7c9;
+}
+
+.carousel-controls {
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.carousel-status {
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+/* ============================================================
+   11. PRICING, PENDING, LEGAL, AND SITEMAP COMPONENTS
+   ============================================================ */
+.pending-panel {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px dashed var(--color-gold);
+  border-radius: var(--radius-medium);
+  background: var(--color-gold-soft);
+}
+
+.pending-panel h2,
+.pending-panel h3 {
+  margin-top: 0.8rem;
+}
+
+.legal-shell {
+  max-width: 52rem;
+}
+
+.legal-shell .pending-panel {
+  margin-bottom: 2rem;
+}
+
+.sitemap-group ul {
+  margin-bottom: 0;
+  padding-left: 1.2rem;
+}
+
+.sitemap-group li + li {
+  margin-top: 0.45rem;
+}
+
+/* ============================================================
+   12. FOOTER
+   ============================================================ */
+.site-footer {
+  padding-block: 4rem 2rem;
+  border-top: 1px solid var(--color-line);
+  background: var(--color-black);
+  color: #eee8dc;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(10rem, 0.7fr));
+}
+
+.footer-heading {
+  margin-bottom: 0.8rem;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.site-footer p,
+.site-footer a {
+  color: #bdb6a9;
+}
+
+.footer-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links li + li {
+  margin-top: 0.45rem;
+}
+
+.footer-links a:hover {
+  color: var(--color-gold-bright);
+}
+
+.footer-bottom {
+  display: flex;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #34312b;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #8f897e;
+  font-size: 0.78rem;
+}
+
+/* ============================================================
+   13. RESPONSIVE RULES
+   Layouts change when content no longer fits comfortably. These
+   breakpoints are content-based, not tied to one phone model.
+   ============================================================ */
+@media (max-width: 68rem) {
+  .site-nav {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 1rem;
+    left: 1rem;
+    display: none;
+    max-height: calc(100vh - var(--header-height) - 3rem);
+    margin-left: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-strong);
+    box-shadow: var(--shadow-soft);
+    overflow-y: auto;
+  }
+
+  .site-nav.is-open {
+    display: grid;
+  }
+
+  .site-nav a {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .menu-toggle {
+    display: inline-grid;
+  }
+
+  .header-actions .button {
+    display: none;
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 52rem) {
+  .hero-grid,
+  .grid--3,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-brand-card {
+    width: min(100%, 30rem);
+    justify-self: center;
+  }
+
+  .footer-grid {
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 42rem) {
+  :root {
+    --header-height: 4.4rem;
+  }
+
+  .brand img {
+    width: 2.7rem;
+    height: 2.7rem;
+  }
+
+  .brand-name {
+    font-size: 0.9rem;
+  }
+
+  .grid--2,
+  .grid--4 {
+    grid-template-columns: 1fr;
+  }
+
+  .callout {
+    grid-template-columns: 1fr;
+  }
+
+  .callout .button {
+    justify-self: start;
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .carousel-slide {
+    min-height: 20rem;
+  }
+}
+
+@media (max-width: 24rem) {
+  .brand-name {
+    display: none;
+  }
+
+  .header-inner {
+    gap: 0.5rem;
+  }
+
+  .header-actions {
+    gap: 0.35rem;
+  }
+}
+
+/* ============================================================
+   14. REDUCED MOTION
+   Visitors who request reduced motion should not receive smooth
+   scrolling or decorative transitions.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

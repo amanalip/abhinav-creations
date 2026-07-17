@@ -1,0 +1,4 @@
+# Browser QA artifacts are temporary and are not part of the website source.
+.playwright-cli/
+output/playwright/
+

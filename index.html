@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Abhinav Creations production studio website pre-launch preview.">
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" href="logo.png" type="image/png">
+    <title>Abhinav Creations | Production Studio</title>
+
+    <!--
+      Apply a previously selected theme before the stylesheet paints the page.
+      The try/catch keeps the page working when a browser blocks storage.
+    -->
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("abhinav-creations-theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          document.documentElement.dataset.theme = savedTheme;
+        }
+      } catch (_error) {}
+    </script>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/main.js" defer></script>
+  </head>
+  <body>
+    <!-- Keyboard users can bypass repeated navigation and reach the page content. -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- This pre-launch notice must remain until pending facts and services are approved. -->
+    <div class="development-notice" role="status">
+      Pre-launch build: business claims, pricing, booking, contact details, GSTIN, and legal text require approval before publication.
+    </div>
+
+    <!-- Shared sticky header. The same structure appears on every public page. -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="Abhinav Creations home">
+          <img src="logo.png" alt="" width="1254" height="1254">
+          <span class="brand-name">Abhinav<small>Creations</small></span>
+        </a>
+
+        <nav class="site-nav" id="primary-navigation" data-site-navigation aria-label="Primary navigation">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="studio-spaces.html">Studio Spaces &amp; Gear</a>
+          <a href="creators-actors.html">Creators &amp; Actors</a>
+          <a href="brands-businesses.html">Brands &amp; Businesses</a>
+          <a href="pricing-booking.html">Pricing &amp; Live Booking</a>
+          <a href="contact.html">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="icon-button" type="button" data-theme-toggle aria-label="Switch color theme" aria-pressed="false">
+            <span class="theme-icon" aria-hidden="true">☾</span>
+          </button>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-controls="primary-navigation" aria-expanded="false" aria-label="Open navigation menu">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <a class="button button--compact" href="pricing-booking.html">Book a Floor Slot</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- 1.1 Hero Header Section — wording follows the supplied outline. -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Alwal · Secunderabad</span>
+            <h1>Hyderabad’s Premium, Solar-Powered Production Studio.</h1>
+            <p class="lead">A state-of-the-art visual and audio facility in Alwal, Secunderabad, built for zero-latency workflows, immaculate acoustics, and high-production content.</p>
+            <div class="button-row">
+              <a class="button" href="studio-spaces.html">Explore Spaces <span aria-hidden="true">→</span></a>
+              <a class="button button--secondary" href="pricing-booking.html">Book Live Calendar</a>
+            </div>
+          </div>
+          <div class="hero-brand-card" aria-label="Abhinav Creations brand mark">
+            <img src="logo.png" alt="Abhinav Creations logo" width="1254" height="1254">
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.2 Segment Splitter — directs B2C and B2B visitors to separate paths. -->
+      <section class="section section--surface" aria-labelledby="audience-heading">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Choose your path</span>
+            <h2 id="audience-heading">How Can We Help You Create Today?</h2>
+          </div>
+          <div class="grid grid--2">
+            <a class="card path-card" href="creators-actors.html">
+              <div>
+                <span class="pending-label">B2C pathway</span>
+                <h3>I am an Actor, Model, or Podcaster</h3>
+                <p>View the talent packages described in the supplied website outline.</p>
+              </div>
+              <span class="path-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="card path-card" href="brands-businesses.html">
+              <div>
+                <span class="pending-label">B2B pathway</span>
+                <h3>I am a Brand, Agency, or Corporate Firm</h3>
+                <p>View the enterprise retainers described in the supplied website outline.</p>
+              </div>
+              <span class="path-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.3 Infrastructure Highlights — claims require owner confirmation before launch. -->
+      <section class="section" aria-labelledby="infrastructure-heading">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Infrastructure</span>
+            <h2 id="infrastructure-heading">Designed for Uncompromised High-End Production.</h2>
+            <p class="lead">These source-provided specifications remain subject to business-owner confirmation before publication.</p>
+          </div>
+          <div class="grid grid--3">
+            <article class="card">
+              <span class="card-number" aria-hidden="true">01</span>
+              <h3>Acoustically Decoupled Rooms</h3>
+              <p>Zero Study Hall Interference.</p>
+            </article>
+            <article class="card">
+              <span class="card-number" aria-hidden="true">02</span>
+              <h3>12.55 kW Solar Power Grid</h3>
+              <p>0-ms Online UPS Failsafe.</p>
+            </article>
+            <article class="card">
+              <span class="card-number" aria-hidden="true">03</span>
+              <h3>Overhead Motorized Grip</h3>
+              <p>Green-Screen Cyclorama Wall.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1.4 Social Proof Grid — working manual carousel with honest placeholders. -->
+      <section class="section section--surface" aria-labelledby="portfolio-heading">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Recent work</span>
+            <h2 id="portfolio-heading">Inside Abhinav Creations.</h2>
+            <p class="lead">Recent portfolios, showreels, and corporate podcasts cut right on our Alwal floor.</p>
+          </div>
+
+          <div class="carousel" data-carousel tabindex="0" aria-label="Portfolio media placeholders">
+            <div class="carousel-viewport">
+              <article class="carousel-slide is-active" data-carousel-slide aria-hidden="false">
+                <div>
+                  <span class="pending-label">Media pending</span>
+                  <h3>Portfolio footage will appear here.</h3>
+                  <p>No image or video has been invented. This slide will use approved portfolio media when supplied.</p>
+                </div>
+              </article>
+              <article class="carousel-slide" data-carousel-slide aria-hidden="true">
+                <div>
+                  <span class="pending-label">Media pending</span>
+                  <h3>Showreel footage will appear here.</h3>
+                  <p>The carousel interaction is complete; the final content is waiting for real source media.</p>
+                </div>
+              </article>
+              <article class="carousel-slide" data-carousel-slide aria-hidden="true">
+                <div>
+                  <span class="pending-label">Media pending</span>
+                  <h3>Corporate podcast footage will appear here.</h3>
+                  <p>Approved videos can be embedded or optimized after their file sizes and hosting needs are reviewed.</p>
+                </div>
+              </article>
+            </div>
+            <div class="carousel-controls">
+              <button class="icon-button" type="button" data-carousel-previous aria-label="Show previous media item">←</button>
+              <span class="carousel-status" data-carousel-status aria-live="polite">Item 1 of 3</span>
+              <button class="icon-button" type="button" data-carousel-next aria-label="Show next media item">→</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final page-level call to action routes to the non-transactional placeholder page. -->
+      <section class="section--tight">
+        <div class="container callout">
+          <div>
+            <span class="eyebrow">Plan your session</span>
+            <h2>Explore the pricing and booking pathway.</h2>
+          </div>
+          <a class="button" href="pricing-booking.html">View current status</a>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared footer — only source-provided corporate details are shown. -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <h2 class="footer-heading">Ennef Spectra Private Limited (ESPL)</h2>
+            <p>Abhinav Creations is a wholly-owned digital studio media division of ESPL.</p>
+            <p>Registered Address: Alwal, Secunderabad, TG, India.<br>Corporate GSTIN: <strong>Pending approved value</strong></p>
+          </div>
+          <div>
+            <h2 class="footer-heading">Explore</h2>
+            <ul class="footer-links">
+              <li><a href="studio-spaces.html">Studio Spaces &amp; Gear</a></li>
+              <li><a href="creators-actors.html">Creators &amp; Actors</a></li>
+              <li><a href="brands-businesses.html">Brands &amp; Businesses</a></li>
+              <li><a href="pricing-booking.html">Pricing &amp; Live Booking</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="footer-heading">Policies &amp; Navigation</h2>
+            <ul class="footer-links">
+              <li><a href="privacy.html">Privacy Policy</a></li>
+              <li><a href="studio-terms.html">Terms of Studio Usage</a></li>
+              <li><a href="cancellation-refunds.html">Cancellation &amp; Refund Policies</a></li>
+              <li><a href="talent-release.html">Digital Talent Release Terms</a></li>
+              <li><a href="sitemap.html">Sitemap</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>Pre-launch static website build</span>
+          <a href="documentation.md">Read the code documentation</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
